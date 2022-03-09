@@ -35,6 +35,7 @@ let config = {
 let player;
 let stars;
 let bombs;
+let bombspawn = 0;
 let platforms;
 let cursors;
 let score = 0;
@@ -173,7 +174,7 @@ function collectStar (player, star)
     bodySize += 1;
     if (bodySize == 5)
     {
-        player.setScale(body + .1);
+        player.setScale(body += .1);
         bodySize -= 5; 
     }
        
@@ -218,22 +219,32 @@ function collectStar (player, star)
     score += 10;
     scoreText.setText('Score: ' + score);
 
-    if (stars.countActive(true) === 0)
+    if (stars.countActive(true) <= 12)
     {
-        //  A new batch of stars to collect
-        stars.children.iterate(function (child) {
 
-            child.enableBody(true, child.x, 0, true, true);
+        let x = (this, Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height));
+        
 
-        });
+        let star = stars.create(x, 16, 'star');
+        star.setBounce(1);
+        star.setCollideWorldBounds(true);
+        star.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        star.allowGravity = false;
 
-        let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+    }
 
-        let bomb = bombs.create(x, 16, 'bomb');
+    bombspawn += 1
+    if (bombspawn == 10)
+    {
+        let x = (this, Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height));
+        
+
+        let bomb = bombs.create(x, 0, 'bomb');
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        bomb.setVelocity(Phaser.Math.Between(-100, 100), 10);
         bomb.allowGravity = false;
+        bombspawn -= 10;
 
     }
 

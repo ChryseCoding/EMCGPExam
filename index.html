@@ -170,7 +170,7 @@ function collectStar (player, star)
 {
     star.disableBody(true, true);
 
-    //Body Scale
+    //Body Scale per 5 collections
     bodySize += 1;
     if (bodySize == 5)
     {
@@ -215,10 +215,11 @@ function collectStar (player, star)
 
     
 
-    //  Add and update the score
+    // Add and update score
     score += 10;
     scoreText.setText('Score: ' + score);
 
+    //spawn new active stars
     if (stars.countActive(true) <= 12)
     {
 
@@ -233,6 +234,7 @@ function collectStar (player, star)
 
     }
 
+    //spawn bombs
     bombspawn += 1
     if (bombspawn == 10)
     {
